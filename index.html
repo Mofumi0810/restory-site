@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Re_story — 怒りの物語を、書き換える。あなたの怒りの「型」を知る無料診断と、夜に置いておく言葉。">
+<title>Re_story — 怒りの物語を、書き換える</title>
+</head>
+<body>
+<style>
+  :root {
+    --ink: #101623;          /* 鉄紺 — 夜の地 */
+    --ink-2: #161e2e;        /* 紺鼠 — 面 */
+    --ink-3: #1e2839;        /* 罫線・境界 */
+    --paper: #ece5d8;        /* 生成り — 本文 */
+    --paper-dim: #9aa0ad;    /* 鈍色 — 補助 */
+    --lamp: #d9a05b;         /* 灯 — 琥珀のアクセント */
+    --lamp-deep: #b97f3e;
+    --seiji: #8fb8a8;        /* 青磁 — 書き換え後の色 */
+    --serif: "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Yu Mincho", "YuMincho", "BIZ UDMincho", Georgia, serif;
+    --sans: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+    --maxw: 1080px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+
+  body {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--serif);
+    line-height: 1.9;
+    font-feature-settings: "palt";
+    overflow-x: hidden;
+  }
+
+  ::selection { background: var(--lamp); color: var(--ink); }
+
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--lamp);
+    outline-offset: 3px;
+  }
+
+  /* ───────── ナビ ───────── */
+  .nav {
+    position: fixed; inset: 0 0 auto 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px clamp(20px, 4vw, 48px);
+    transition: background .4s ease, box-shadow .4s ease;
+  }
+  .nav.scrolled {
+    background: rgba(16, 22, 35, .82);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 1px 0 var(--ink-3);
+  }
+  .logo {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 17px;
+    letter-spacing: .06em;
+    text-decoration: none;
+  }
+  .logo .u {
+    display: inline-block;
+    color: var(--lamp);
+    animation: blink 1.2s steps(1) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .logo .u { animation: none; } }
+
+  .nav-links {
+    display: flex; gap: clamp(16px, 3vw, 36px);
+    font-family: var(--sans); font-size: 13px; letter-spacing: .14em;
+  }
+  .nav-links a { text-decoration: none; color: var(--paper-dim); transition: color .25s; }
+  .nav-links a:hover { color: var(--paper); }
+  @media (max-width: 640px) { .nav-links { display: none; } }
+
+  /* ───────── ヒーロー ───────── */
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex; align-items: center;
+    overflow: hidden;
+  }
+  /* 原稿用紙の気配 — ごく薄い縦罫 */
+  .hero::before {
+    content: "";
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent 0 calc(100% / 14 - 1px),
+      rgba(236, 229, 216, .035) calc(100% / 14 - 1px) calc(100% / 14)
+    );
+    pointer-events: none;
+  }
+  #embers {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+  }
+  .hero-inner {
+    position: relative; z-index: 2;
+    width: 100%; max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 120px clamp(20px, 4vw, 48px) 80px;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 48px;
+  }
+  .hero-copy { max-width: 34em; }
+  .eyebrow {
+    font-family: var(--sans);
+    font-size: 12px; letter-spacing: .3em;
+    color: var(--lamp);
+    margin-bottom: 28px;
+  }
+
+  /* 書き換えの一文 */
+  .rewrite {
+    font-size: clamp(20px, 3.2vw, 30px);
+    line-height: 2.1;
+    margin-bottom: 28px;
+    text-wrap: balance;
+  }
+  .rw-old { position: relative; color: var(--paper-dim); white-space: nowrap; }
+  .rw-old::after {
+    content: "";
+    position: absolute; left: 0; top: 54%;
+    height: 1px; background: var(--lamp);
+    width: 0;
+    transition: width .8s cubic-bezier(.7, 0, .3, 1);
+  }
+  .rewrite.struck .rw-old::after { width: 100%; }
+  .rw-new {
+    color: var(--seiji);
+    opacity: 0;
+    transform: translateY(6px);
+    display: inline-block;
+    transition: opacity .9s ease .5s, transform .9s ease .5s;
+  }
+  .rewrite.struck .rw-new { opacity: 1; transform: none; }
+
+  .hero-sub {
+    color: var(--paper-dim);
+    font-size: 15px;
+    max-width: 30em;
+    margin-bottom: 44px;
+  }
+
+  .cta-row { display: flex; gap: 16px; flex-wrap: wrap; }
+  .btn {
+    font-family: var(--sans);
+    font-size: 14px; letter-spacing: .08em;
+    text-decoration: none;
+    padding: 14px 28px;
+    border-radius: 2px;
+    transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--lamp), var(--lamp-deep));
+    color: #14100a;
+    font-weight: 600;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(217, 160, 91, .25); }
+  .btn-ghost {
+    border: 1px solid var(--ink-3);
+    color: var(--paper-dim);
+  }
+  .btn-ghost:hover { border-color: var(--lamp); color: var(--paper); }
+
+  /* 縦書きの標題 */
+  .tate {
+    writing-mode: vertical-rl;
+    font-size: clamp(34px, 5.4vw, 60px);
+    line-height: 1.9;
+    letter-spacing: .18em;
+    height: min(58svh, 520px);
+    flex-shrink: 0;
+    display: flex;
+    gap: .5em;
+  }
+  .tate .line { opacity: 0; transform: translateY(18px); }
+  .tate.in .line { animation: rise 1.1s cubic-bezier(.2, .7, .2, 1) forwards; }
+  .tate.in .line:nth-child(2) { animation-delay: .25s; }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    .tate .line { opacity: 1; transform: none; animation: none; }
+  }
+  @media (max-width: 860px) {
+    .hero-inner { flex-direction: row-reverse; align-items: flex-start; gap: 20px; }
+    .tate { height: 46svh; font-size: clamp(28px, 8vw, 40px); }
+  }
+  @media (max-width: 560px) {
+    .hero-inner { flex-direction: column-reverse; align-items: flex-start; }
+    .tate { height: auto; max-height: 40svh; }
+  }
+
+  /* ───────── 共通セクション ───────── */
+  section { position: relative; }
+  .wrap {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: clamp(80px, 12vh, 140px) clamp(20px, 4vw, 48px);
+  }
+  .sec-label {
+    font-family: var(--sans);
+    font-size: 12px; letter-spacing: .3em;
+    color: var(--lamp);
+    margin-bottom: 20px;
+  }
+  .sec-title {
+    font-size: clamp(26px, 3.6vw, 38px);
+    letter-spacing: .06em;
+    margin-bottom: 36px;
+    text-wrap: balance;
+  }
+  .prose {
+    max-width: 36em;
+    color: var(--paper-dim);
+    font-size: 15.5px;
+  }
+  .prose strong { color: var(--paper); font-weight: 600; }
+
+  .reveal { opacity: 0; transform: translateY(26px); transition: opacity .9s ease, transform .9s cubic-bezier(.2, .7, .2, 1); }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+
+  .hr {
+    height: 1px; border: 0;
+    background: linear-gradient(90deg, transparent, var(--ink-3) 20% 80%, transparent);
+  }
+
+  /* ───────── 型 ───────── */
+  .types { background: var(--ink-2); }
+  .type-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
+    margin-top: 12px;
+  }
+  .type-card {
+    position: relative;
+    background: var(--ink);
+    border: 1px solid var(--ink-3);
+    border-radius: 3px;
+    padding: 30px 26px 26px;
+    overflow: hidden;
+    transition: transform .3s ease, border-color .3s ease;
+  }
+  .type-card:hover { transform: translateY(-5px); border-color: rgba(217, 160, 91, .45); }
+  .type-kanji {
+    position: absolute; right: -6px; top: -18px;
+    font-size: 110px; line-height: 1;
+    color: rgba(236, 229, 216, .045);
+    pointer-events: none;
+    user-select: none;
+  }
+  .type-name { font-size: 20px; letter-spacing: .1em; margin-bottom: 6px; }
+  .type-voice {
+    font-family: var(--sans);
+    font-size: 12.5px;
+    color: var(--lamp);
+    margin-bottom: 16px;
+  }
+  .type-desc { font-size: 14px; color: var(--paper-dim); line-height: 1.95; }
+
+  /* ───────── ことば ───────── */
+  .words .wrap { text-align: center; }
+  .quote-stage {
+    position: relative;
+    min-height: 9.5em;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .quote {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 18px;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+    padding: 0 16px;
+  }
+  .quote.active { opacity: 1; }
+  .quote p {
+    font-size: clamp(19px, 2.8vw, 26px);
+    line-height: 2.2;
+    letter-spacing: .06em;
+    max-width: 26em;
+    text-wrap: balance;
+  }
+  .quote-mark { color: var(--lamp); font-size: 22px; }
+  .quote-dots { display: flex; gap: 10px; justify-content: center; margin-top: 34px; }
+  .qdot {
+    width: 6px; height: 6px; border-radius: 50%;
+    border: 0; padding: 0; cursor: pointer;
+    background: var(--ink-3);
+    transition: background .3s, transform .3s;
+  }
+  .qdot.active { background: var(--lamp); transform: scale(1.3); }
+
+  /* ───────── 診断 ───────── */
+  .shindan-panel {
+    position: relative;
+    background: var(--ink-2);
+    border: 1px solid var(--ink-3);
+    border-radius: 4px;
+    padding: clamp(44px, 7vw, 72px) clamp(24px, 5vw, 64px);
+    text-align: center;
+    overflow: hidden;
+  }
+  .shindan-panel::before {
+    content: "";
+    position: absolute; inset: 0 0 auto 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--lamp), var(--seiji), transparent);
+  }
+  .shindan-panel .sec-title { margin-bottom: 14px; }
+  .shindan-meta {
+    font-family: var(--sans);
+    font-size: 13px; letter-spacing: .2em;
+    color: var(--paper-dim);
+    margin-bottom: 36px;
+  }
+
+  /* ───────── プロフィール ───────── */
+  .profile-flex {
+    display: flex; gap: clamp(28px, 5vw, 56px); align-items: center;
+    flex-wrap: wrap;
+  }
+  .avatar {
+    width: 108px; height: 108px; border-radius: 50%;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: radial-gradient(circle at 30% 25%, #223050, var(--ink-2));
+    border: 1px solid var(--ink-3);
+    font-size: 30px; letter-spacing: .1em;
+    color: var(--seiji);
+  }
+  .profile-name { font-size: 22px; letter-spacing: .12em; margin-bottom: 4px; }
+  .profile-role { font-family: var(--sans); font-size: 12px; letter-spacing: .2em; color: var(--lamp); margin-bottom: 16px; }
+  .sns-row { display: flex; gap: 22px; margin-top: 20px; font-family: var(--sans); font-size: 13px; letter-spacing: .1em; }
+  .sns-row a { color: var(--paper-dim); text-decoration: none; border-bottom: 1px solid var(--ink-3); padding-bottom: 2px; transition: color .25s, border-color .25s; }
+  .sns-row a:hover { color: var(--paper); border-color: var(--lamp); }
+
+  /* ───────── フッター ───────── */
+  footer {
+    border-top: 1px solid var(--ink-3);
+    padding: 34px clamp(20px, 4vw, 48px);
+    display: flex; justify-content: space-between; align-items: center; gap: 16px;
+    font-family: var(--sans); font-size: 12px; letter-spacing: .12em;
+    color: var(--paper-dim);
+    flex-wrap: wrap;
+  }
+</style>
+
+<nav class="nav" id="nav">
+  <a class="logo" href="#top">Re<span class="u">_</span>story</a>
+  <div class="nav-links">
+    <a href="#types">型を知る</a>
+    <a href="#words">ことば</a>
+    <a href="#shindan">診断</a>
+    <a href="#profile">プロフィール</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <canvas id="embers" aria-hidden="true"></canvas>
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <p class="eyebrow">RE_STORY — 怒りの物語を、書き換える</p>
+      <p class="rewrite" id="rewrite">
+        <span class="rw-old" id="rwOld">怒りっぽい性格</span><span>は、</span><br>
+        <span class="rw-new" id="rwNew">必死に自分を守ってきた、癖</span><span class="rw-new" style="transition-delay:.7s">だった。</span>
+      </p>
+      <p class="hero-sub">
+        爆発も、沈黙も、正論も、回避も。ぜんぶ、崩れそうな自分を支えてきた「守り方」。
+        責めても変わらない。名前がつくと、ほどけていく。
+      </p>
+      <div class="cta-row">
+        <!-- TODO: 診断URLに差し替え -->
+        <a class="btn btn-primary" href="#shindan">無料診断をはじめる</a>
+        <a class="btn btn-ghost" href="#words">ことばを読む</a>
+      </div>
+    </div>
+    <h1 class="tate" id="tate">
+      <span class="line">怒りは、</span>
+      <span class="line">物語の入り口。</span>
+    </h1>
+  </div>
+</header>
+
+<section id="concept">
+  <div class="wrap">
+    <p class="sec-label reveal">CONCEPT</p>
+    <h2 class="sec-title reveal">怒りは、性格じゃない。</h2>
+    <div class="prose reveal">
+      <p>
+        怒りが止まらない人がいる。言えずに飲み込む人がいる。気まずくなると消える人がいる。
+        ぜんぶ、別の人の話に見える。でも、根っこは同じだった。
+      </p>
+      <p style="margin-top:1.6em">
+        <strong>自分が崩れそうな時、それぞれ違う形で、必死に自分を支えている。</strong>
+      </p>
+      <p style="margin-top:1.6em">
+        Re_story は、その「守り方の型」に名前をつけ、
+        怒りの物語を書き換えていくための場所です。
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="types" id="types">
+  <div class="wrap">
+    <p class="sec-label reveal">FIVE PATTERNS</p>
+    <h2 class="sec-title reveal">あなたの怒りには、型がある。</h2>
+    <div class="type-grid">
+      <div class="type-card reveal">
+        <span class="type-kanji">爆</span>
+        <h3 class="type-name">爆発の型</h3>
+        <p class="type-voice">「なんで、あんなことで。」</p>
+        <p class="type-desc">引き金はいつも些細。皿の置き方、返事のトーン。沸点は出来事の大きさじゃなく、飲み込んできた我慢の回数。</p>
+      </div>
+      <div class="type-card reveal">
+        <span class="type-kanji">忍</span>
+        <h3 class="type-name">我慢の型</h3>
+        <p class="type-voice">「大丈夫、気にしてない。」</p>
+        <p class="type-desc">笑って受け流して、飲み込んだことすら忘れていく。火は消えていない。静かに、溜まっていく。</p>
+      </div>
+      <div class="type-card reveal">
+        <span class="type-kanji">正</span>
+        <h3 class="type-name">正論の型</h3>
+        <p class="type-voice">「でも、私が正しいんです。」</p>
+        <p class="type-desc">引いたら自分が崩れる気がして、論破するまで止まれない。守っていたのは正論じゃなく、自分の輪郭。</p>
+      </div>
+      <div class="type-card reveal">
+        <span class="type-kanji">避</span>
+        <h3 class="type-name">回避の型</h3>
+        <p class="type-voice">「その場から、静かに消える。」</p>
+        <p class="type-desc">気まずさに触れない。ぶつかる前に、距離をとる。それが一番安全だと、どこかで学んできた。</p>
+      </div>
+      <div class="type-card reveal">
+        <span class="type-kanji">察</span>
+        <h3 class="type-name">察しての型</h3>
+        <p class="type-voice">「言わなくても、わかってほしい。」</p>
+        <p class="type-desc">言葉にする前に、期待が先に積もる。伝わらなかった分だけ、静かな怒りに変わっていく。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="words" id="words">
+  <div class="wrap">
+    <p class="sec-label reveal">WORDS</p>
+    <h2 class="sec-title reveal">夜に、置いておく言葉。</h2>
+    <div class="quote-stage reveal" id="quoteStage" aria-live="polite">
+      <figure class="quote active">
+        <span class="quote-mark" aria-hidden="true">――</span>
+        <p>沸点は、出来事の大きさじゃない。<br>それまで飲み込んできた、我慢の回数だ。</p>
+      </figure>
+      <figure class="quote">
+        <span class="quote-mark" aria-hidden="true">――</span>
+        <p>怒りは、抑えると強くなる。<br>名前がつくと、ほどける。</p>
+      </figure>
+      <figure class="quote">
+        <span class="quote-mark" aria-hidden="true">――</span>
+        <p>正論は、鎧だった。<br>鎧を着たまま、誰かと抱き合うことはできない。</p>
+      </figure>
+      <figure class="quote">
+        <span class="quote-mark" aria-hidden="true">――</span>
+        <p>怒れているうちは、まだ間に合う。</p>
+      </figure>
+      <figure class="quote">
+        <span class="quote-mark" aria-hidden="true">――</span>
+        <p>我慢する自分と、爆発する自分の間に、<br>まだ新しい道がある。</p>
+      </figure>
+    </div>
+    <div class="quote-dots" id="quoteDots" role="tablist" aria-label="ことばの切り替え"></div>
+  </div>
+</section>
+
+<section id="shindan">
+  <div class="wrap">
+    <div class="shindan-panel reveal">
+      <p class="sec-label">FREE TEST</p>
+      <h2 class="sec-title">あなたの怒りに、名前をつける。</h2>
+      <p class="shindan-meta">10問 ・ 5分 ・ 無料</p>
+      <!-- TODO: 診断ページのURLに差し替え -->
+      <a class="btn btn-primary" href="#" aria-disabled="true">診断をはじめる</a>
+    </div>
+  </div>
+</section>
+
+<section id="profile">
+  <div class="wrap">
+    <p class="sec-label reveal">PROFILE</p>
+    <div class="profile-flex reveal">
+      <div class="avatar" aria-hidden="true">青</div>
+      <div>
+        <h2 class="profile-name">青鳥あおい</h2>
+        <p class="profile-role">RE_STORY</p>
+        <p class="prose">
+          怒りとの付き合い方を、物語のかたちで毎日発信。
+          朝は「その瞬間」の整え方を、昼は視点を、夜は物語を。
+        </p>
+        <div class="sns-row">
+          <a href="https://x.com/aotoriaoi" target="_blank" rel="noopener">X (Twitter)</a>
+          <!-- TODO: Threads / note のURLに差し替え -->
+          <a href="#">Threads</a>
+          <a href="#">note</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 Re_story</span>
+  <span>怒りの物語を、書き換える。</span>
+</footer>
+
+<script>
+(function () {
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ナビの影 */
+  const nav = document.getElementById('nav');
+  addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', scrollY > 24);
+  }, { passive: true });
+
+  /* 縦書き標題の立ち上がり */
+  document.getElementById('tate').classList.add('in');
+
+  /* 書き換え演出 — 校正のように、一文が直されていく */
+  const rewriteEl = document.getElementById('rewrite');
+  const rwOld = document.getElementById('rwOld');
+  const rwNew = document.getElementById('rwNew');
+  const pairs = [
+    ['怒りっぽい性格', '必死に自分を守ってきた、癖'],
+    ['また、やってしまった', 'まだ、間に合う'],
+    ['ダメな自分', '疲れていた自分'],
+  ];
+  let pi = 0;
+  function strike() { rewriteEl.classList.add('struck'); }
+  function cyclePair() {
+    rewriteEl.classList.remove('struck');
+    pi = (pi + 1) % pairs.length;
+    setTimeout(() => {
+      rwOld.textContent = pairs[pi][0];
+      rwNew.textContent = pairs[pi][1];
+      setTimeout(strike, 900);
+    }, 600);
+  }
+  if (reduced) {
+    strike();
+  } else {
+    setTimeout(strike, 1200);
+    setInterval(cyclePair, 9000);
+  }
+
+  /* スクロール顕現 */
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    }
+  }, { threshold: 0.18 });
+  document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+
+  /* ことばの回替 */
+  const quotes = [...document.querySelectorAll('.quote')];
+  const dotsBox = document.getElementById('quoteDots');
+  let qi = 0, qTimer;
+  quotes.forEach((_, i) => {
+    const b = document.createElement('button');
+    b.className = 'qdot' + (i === 0 ? ' active' : '');
+    b.setAttribute('aria-label', 'ことば ' + (i + 1));
+    b.addEventListener('click', () => { showQuote(i); restartQuoteTimer(); });
+    dotsBox.appendChild(b);
+  });
+  const dots = [...dotsBox.children];
+  function showQuote(i) {
+    quotes[qi].classList.remove('active');
+    dots[qi].classList.remove('active');
+    qi = i;
+    quotes[qi].classList.add('active');
+    dots[qi].classList.add('active');
+  }
+  function restartQuoteTimer() {
+    if (reduced) return;
+    clearInterval(qTimer);
+    qTimer = setInterval(() => showQuote((qi + 1) % quotes.length), 6500);
+  }
+  restartQuoteTimer();
+
+  /* 火の粉 — 昇りながら、青磁色に冷めていく */
+  const canvas = document.getElementById('embers');
+  if (!reduced && canvas) {
+    const ctx = canvas.getContext('2d');
+    const LAMP = [217, 160, 91];
+    const SEIJI = [143, 184, 168];
+    let W, H, parts = [];
+    function resize() {
+      const r = canvas.getBoundingClientRect();
+      W = canvas.width = r.width * devicePixelRatio;
+      H = canvas.height = r.height * devicePixelRatio;
+    }
+    resize();
+    addEventListener('resize', resize);
+    function spawn() {
+      return {
+        x: Math.random() * W,
+        y: H + 10,
+        r: (Math.random() * 1.6 + 0.7) * devicePixelRatio,
+        vy: (Math.random() * 0.35 + 0.18) * devicePixelRatio,
+        sway: Math.random() * 2 * Math.PI,
+        swaySpeed: Math.random() * 0.012 + 0.004,
+        alpha: Math.random() * 0.35 + 0.25,
+      };
+    }
+    for (let i = 0; i < 46; i++) {
+      const p = spawn();
+      p.y = Math.random() * H;
+      parts.push(p);
+    }
+    function lerp(a, b, t) { return a + (b - a) * t; }
+    function tick() {
+      ctx.clearRect(0, 0, W, H);
+      for (let p of parts) {
+        p.y -= p.vy;
+        p.sway += p.swaySpeed;
+        p.x += Math.sin(p.sway) * 0.3 * devicePixelRatio;
+        const t = 1 - p.y / H; /* 0=下(灯) → 1=上(青磁) */
+        const c = [
+          lerp(LAMP[0], SEIJI[0], t) | 0,
+          lerp(LAMP[1], SEIJI[1], t) | 0,
+          lerp(LAMP[2], SEIJI[2], t) | 0,
+        ];
+        const fade = p.y < H * 0.25 ? Math.max(p.y / (H * 0.25), 0) : 1;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${c[0]},${c[1]},${c[2]},${p.alpha * fade})`;
+        ctx.fill();
+        if (p.y < -12) Object.assign(p, spawn());
+      }
+      requestAnimationFrame(tick);
+    }
+    tick();
+  }
+})();
+</script>
+</body>
+</html>
