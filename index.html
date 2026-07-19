@@ -49,9 +49,14 @@
   /* ───────── ナビ ───────── */
   .nav {
     position: fixed; inset: 0 0 auto 0; z-index: 50;
-    display: flex; align-items: center; justify-content: space-between;
     padding: 18px clamp(20px, 4vw, 48px);
     transition: background .4s ease, box-shadow .4s ease;
+  }
+  /* ナビの中身は本文と同じ幅に揃える(広い画面で端に張り付かないように) */
+  .nav-inner {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
   }
   .nav.scrolled {
     background: rgba(16, 22, 35, .82);
@@ -435,13 +440,15 @@
 </style>
 
 <nav class="nav" id="nav">
-  <a class="logo" href="#top">Re<span class="u">_</span>story</a>
-  <div class="nav-links">
-    <a href="#types">タイプを知る</a>
-    <a href="#words">ことば</a>
-    <a href="#shindan">診断</a>
-    <a href="#services">一緒に進む</a>
-    <a href="#profile">プロフィール</a>
+  <div class="nav-inner">
+    <a class="logo" href="#top">Re<span class="u">_</span>story</a>
+    <div class="nav-links">
+      <a href="#types">タイプを知る</a>
+      <a href="#words">ことば</a>
+      <a href="#shindan">診断</a>
+      <a href="#services">一緒に進む</a>
+      <a href="#profile">プロフィール</a>
+    </div>
   </div>
 </nav>
 
@@ -613,20 +620,17 @@
         <p class="type-desc">いま困っていることを聞かせてください。何が起きているのか、何が合うのかを、一緒に整理します。</p>
         <div class="svc-foot">
           <span class="svc-price">¥5,000</span>
-          <!-- TODO: 申込導線が決まったら %%SESSION_URL%% に差し替え(現在はXのDMへ) -->
-          <a class="btn btn-ghost btn-sm" href="https://x.com/aotoriaoi" target="_blank" rel="noopener">相談してみる</a>
+          <a class="btn btn-ghost btn-sm" href="https://aotoriaoi.blueloom.jp/p/VlskwVDmdzWl" target="_blank" rel="noopener">相談してみる</a>
         </div>
-        <p class="svc-note">現在は X（@aotoriaoi）のDMで受け付けています。</p>
       </div>
       <div class="type-card svc-card svc-featured reveal">
         <h4 class="svc-name">個別プログラム</h4>
         <p class="type-desc">ワークシートで実際の一場面を分解し、Zoom 60分で根っこまで一緒に見る。その後2週間、日常での気づきをDMで拾います。「型を知る」から「日常で変わりはじめる」まで。</p>
         <div class="svc-foot">
           <span class="svc-price"><s>正規 ¥50,000</s>モニター ¥30,000</span>
-          <!-- TODO: 申込導線が決まったら %%SESSION_URL%% に差し替え(現在はXのDMへ) -->
-          <a class="btn btn-ghost btn-sm" href="https://x.com/aotoriaoi" target="_blank" rel="noopener">話を聞いてみる</a>
+          <a class="btn btn-ghost btn-sm" href="https://aotoriaoi.blueloom.jp/p/M03XMuViUv9N" target="_blank" rel="noopener">申し込む</a>
         </div>
-        <p class="svc-note">立ち上げ期のモニター募集。条件は、率直な感想をいただくことだけです。お申し込みは X（@aotoriaoi）のDMから。</p>
+        <p class="svc-note">立ち上げ期のモニター募集。条件は、率直な感想をいただくことだけです。</p>
       </div>
     </div>
 
