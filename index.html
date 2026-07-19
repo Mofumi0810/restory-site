@@ -381,6 +381,7 @@
     gap: 18px; flex-wrap: wrap;
   }
   .mail-band p { font-size: 13.5px; color: var(--paper-dim); }
+  .mail-band-btns { display: flex; gap: 12px; flex-wrap: wrap; }
 
   /* ───────── プロフィール ───────── */
   .profile-flex {
@@ -400,6 +401,20 @@
   .sns-row { display: flex; gap: 22px; margin-top: 20px; font-family: var(--sans); font-size: 13px; letter-spacing: .1em; }
   .sns-row a { color: var(--paper-dim); text-decoration: none; border-bottom: 1px solid var(--ink-3); padding-bottom: 2px; transition: color .25s, border-color .25s; }
   .sns-row a:hover { color: var(--paper); border-color: var(--lamp); }
+  .story { max-width: 40em; }
+  .story h3 { font-size: 16px; letter-spacing: .12em; margin: 44px 0 14px; }
+  .story h3 .num {
+    font-family: var(--sans);
+    font-size: 11px; letter-spacing: .3em;
+    color: var(--lamp);
+    margin-right: 12px;
+    vertical-align: 2px;
+  }
+  .story p { color: var(--paper-dim); font-size: 15px; line-height: 2.15; }
+  .story p + p { margin-top: 1.2em; }
+  .story .letter { border-left: 2px solid var(--lamp); padding-left: 22px; margin-top: 52px; }
+  .story .letter h3 { margin-top: 0; }
+  .story .letter p { color: var(--paper); }
 
   /* ───────── フッター ───────── */
   footer {
@@ -561,7 +576,7 @@
     <p class="prose reveal">
       急がなくて、大丈夫です。<br>
       まず無料で。合いそうだと感じたら、少しずつ深く。<br>
-      押し上げることは、しません。
+      無理にすすめることは、しません。
     </p>
 
     <h3 class="svc-group reveal">まず知る<span>— 無料</span></h3>
@@ -595,6 +610,7 @@
           <!-- TODO: 申込導線が決まったら %%SESSION_URL%% に差し替え(現在はXのDMへ) -->
           <a class="btn btn-ghost btn-sm" href="https://x.com/aotoriaoi" target="_blank" rel="noopener">相談してみる</a>
         </div>
+        <p class="svc-note">現在は X（@aotoriaoi）のDMで受け付けています。</p>
       </div>
       <div class="type-card svc-card svc-featured reveal">
         <h4 class="svc-name">個別プログラム</h4>
@@ -604,7 +620,7 @@
           <!-- TODO: 申込導線が決まったら %%SESSION_URL%% に差し替え(現在はXのDMへ) -->
           <a class="btn btn-ghost btn-sm" href="https://x.com/aotoriaoi" target="_blank" rel="noopener">話を聞いてみる</a>
         </div>
-        <p class="svc-note">立ち上げ期のモニター募集。条件は、率直な感想をいただくことだけです。</p>
+        <p class="svc-note">立ち上げ期のモニター募集。条件は、率直な感想をいただくことだけです。お申し込みは X（@aotoriaoi）のDMから。</p>
       </div>
     </div>
 
@@ -642,14 +658,99 @@
         </div>
       </div>
     </div>
+
+    <div class="story">
+      <p class="sec-label reveal" style="margin-top:72px">MY STORY — わたしの物語</p>
+
+      <div class="reveal">
+        <h3><span class="num">Ⅰ</span>感情を、切り離した幼少期</h3>
+        <p>
+          末っ子のわたしは、両親の喧嘩をずっと眺めていました。母はよく「出ていく」と言った。
+          いつ捨てられるかわからない——その怖さが、静かに根付いていきました。
+          学校では暴力を受け続け、いつしか「感じないことは、勝ちになる」と覚えてしまった。
+          痛くないふり。怖くないふり。傷ついていないふり。
+          それは当時のわたしにとって、確かに必要な守り方でした。
+        </p>
+      </div>
+
+      <div class="reveal">
+        <h3><span class="num">Ⅱ</span>怒りは、爽快だった</h3>
+        <p>
+          正直に書きます。わたしはかつて、怒りに爽快感を感じていました。
+          一度火がつけば止まれず、相手の一番痛いところを、的確に撃ち抜いてしまう。
+          心臓がバクバクして、頭が冴えていく——その熱の中でだけ、わたしは「ここにいる」と感じられたのだと思います。
+          そして怒りをぶつけられる相手はいつも、わたしを愛してやまない人でした。
+        </p>
+      </div>
+
+      <div class="reveal">
+        <h3><span class="num">Ⅲ</span>どん底</h3>
+        <p>
+          結婚して、「今度こそ」幸せになれるはずでした。
+          でもわたしは怒りに任せて、彼の一番傷つくところを撃ち抜き続けた。
+          そしてある日、突然、別れを告げられました。
+          わたしの言葉が、彼の中で取り返しのつかない場所まで積もっていたことに、まったく気づいていなかったのです。
+        </p>
+      </div>
+
+      <div class="reveal">
+        <h3><span class="num">Ⅳ</span>怒りの正体</h3>
+        <p>
+          助けを求めて辿り着いたカウンセリングの場で、気づいてしまいました。
+          相手が少し離れると、「やっぱり捨てられる」という幼い頃の怖さが顔を出す。
+          その怖さが、怒りになって爆発していた。
+          怒りの正体は、ずっとそれだったのです。
+        </p>
+      </div>
+
+      <div class="reveal">
+        <h3><span class="num">Ⅴ</span>物語の、編み直し</h3>
+        <p>
+          「私は捨てられる」ではなく、「私は、自分で自分を支えられる」。
+          「怒らなければ守れない」ではなく、「爆発しなくても、自分を守れる」。
+          そうやって古い物語を見直していくうちに、大切な人を傷つける爆発は、少しずつ役割を終えていきました。
+        </p>
+        <p>
+          18歳になる息子は、いま、こう言ってくれます。「うちは結構仲良いもんね」と。
+          怒りで人間関係を壊し続けてきたわたしにとって、これが何より確かな証拠です。
+        </p>
+      </div>
+
+      <div class="reveal">
+        <h3><span class="num">Ⅵ</span>看護師として、カウンセラーとして</h3>
+        <p>
+          看護の現場では、「今から何をするのか、なぜ必要なのか」を伝えることを徹底しました。
+          わからないことは、人を不安にします。でも、何が起きているのかが言葉になると、人は落ち着きを取り戻せる。
+          その後は企業内カウンセラーとして、不安や怒りの中にいる人のとなりで話を聴き、
+          もう一度自分で動き出せるところまでそばにいました。
+          場所は違っても、やってきたことは、ずっと同じです。
+        </p>
+      </div>
+
+      <div class="reveal letter">
+        <h3><span class="num">Ⅶ</span>ここまで読んでくれた、あなたへ</h3>
+        <p>
+          怒りは、消えません。でも、怒りとの関係は、変えられます。
+          振り回される側から、怒りの声を聴ける側へ。
+        </p>
+        <p>
+          人は、物語を生きている。その物語は、編み直せる。
+          わたしが自分の人生で確かめたことを、今度は、あなたに差し出します。
+        </p>
+      </div>
+    </div>
   </div>
 </section>
 
 <aside class="mail-band">
   <div class="mail-band-inner">
     <p>診断は、あとでいい。という方へ。<br>4日間、感情の「型」の話を、朝のメールで届けています。無料です。</p>
-    <!-- TODO: %%MAIL_LP_URL%% をメール講座登録LPのURLに差し替え -->
-    <a class="btn btn-ghost btn-sm" href="%%MAIL_LP_URL%%">メール講座だけ受け取る</a>
+    <div class="mail-band-btns">
+      <!-- TODO: %%MAIL_LP_URL%% をメール講座登録LPのURLに差し替え -->
+      <a class="btn btn-ghost btn-sm" href="%%MAIL_LP_URL%%">メール講座だけ受け取る</a>
+      <!-- TODO: %%NEWSLETTER_URL%% をメールマガジン登録フォームのURLに差し替え -->
+      <a class="btn btn-ghost btn-sm" href="%%NEWSLETTER_URL%%">メールマガジンに登録する</a>
+    </div>
   </div>
 </aside>
 
