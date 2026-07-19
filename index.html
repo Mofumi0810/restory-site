@@ -85,7 +85,8 @@
   /* ───────── ヒーロー ───────── */
   .hero {
     position: relative;
-    min-height: 100svh;
+    /* 埋め込み(自動リサイズiframe)でsvhが暴走しないよう上限を設ける */
+    min-height: min(100svh, 780px);
     display: flex; align-items: center;
     overflow: hidden;
   }
@@ -194,11 +195,11 @@
   }
   @media (max-width: 860px) {
     .hero-inner { flex-direction: row-reverse; align-items: flex-start; gap: 20px; }
-    .tate { height: 46svh; font-size: clamp(28px, 8vw, 40px); }
+    .tate { height: min(46svh, 400px); font-size: clamp(28px, 8vw, 40px); }
   }
   @media (max-width: 560px) {
     .hero-inner { flex-direction: column-reverse; align-items: flex-start; }
-    .tate { height: auto; max-height: 40svh; }
+    .tate { height: auto; max-height: 340px; }
   }
 
   /* ───────── 共通セクション ───────── */
