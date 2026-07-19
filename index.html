@@ -13,7 +13,7 @@
     --ink-2: #161e2e;        /* 紺鼠 — 面 */
     --ink-3: #1e2839;        /* 罫線・境界 */
     --paper: #ece5d8;        /* 生成り — 本文 */
-    --paper-dim: #9aa0ad;    /* 鈍色 — 補助 */
+    --paper-dim: #b6bcc8;    /* 鈍色 — 補助(視認性のため明るめ) */
     --lamp: #d9a05b;         /* 灯 — 琥珀のアクセント */
     --lamp-deep: #b97f3e;
     --seiji: #8fb8a8;        /* 青磁 — 書き換え後の色 */
@@ -125,6 +125,7 @@
   /* 書き換えの一文 */
   .rewrite {
     font-size: clamp(20px, 3.2vw, 30px);
+    font-weight: 600;
     line-height: 2.1;
     margin-bottom: 28px;
     text-wrap: balance;
@@ -148,8 +149,10 @@
   .rewrite.struck .rw-new { opacity: 1; transform: none; }
 
   .hero-sub {
+    font-family: var(--sans);
     color: var(--paper-dim);
     font-size: 15px;
+    line-height: 2.05;
     max-width: 30em;
     margin-bottom: 44px;
   }
@@ -179,6 +182,7 @@
   .tate {
     writing-mode: vertical-rl;
     font-size: clamp(34px, 5.4vw, 60px);
+    font-weight: 600;
     line-height: 1.9;
     letter-spacing: .18em;
     height: min(58svh, 520px);
@@ -220,14 +224,17 @@
   }
   .sec-title {
     font-size: clamp(26px, 3.6vw, 38px);
+    font-weight: 600;
     letter-spacing: .06em;
     margin-bottom: 36px;
     text-wrap: balance;
   }
   .prose {
+    font-family: var(--sans);
     max-width: 36em;
     color: var(--paper-dim);
-    font-size: 15.5px;
+    font-size: 15px;
+    line-height: 2.05;
   }
   .prose strong { color: var(--paper); font-weight: 600; }
 
@@ -267,7 +274,7 @@
     pointer-events: none;
     user-select: none;
   }
-  .type-name { font-size: 20px; letter-spacing: .1em; margin-bottom: 6px; }
+  .type-name { font-size: 20px; font-weight: 600; letter-spacing: .1em; margin-bottom: 6px; }
   .type-sub {
     font-family: var(--sans);
     font-size: 11px; letter-spacing: .2em;
@@ -281,7 +288,7 @@
     color: var(--lamp);
     margin-bottom: 16px;
   }
-  .type-desc { font-size: 14px; color: var(--paper-dim); line-height: 1.95; }
+  .type-desc { font-family: var(--sans); font-size: 13.5px; color: var(--paper-dim); line-height: 2; }
 
   /* ───────── ことば ───────── */
   .words .wrap { text-align: center; }
@@ -301,6 +308,7 @@
   .quote.active { opacity: 1; }
   .quote p {
     font-size: clamp(19px, 2.8vw, 26px);
+    font-weight: 600;
     line-height: 2.2;
     letter-spacing: .06em;
     max-width: 26em;
@@ -352,7 +360,7 @@
     gap: 18px;
   }
   .svc-card { display: flex; flex-direction: column; }
-  .svc-name { font-size: 18px; letter-spacing: .08em; margin-bottom: 12px; }
+  .svc-name { font-size: 18px; font-weight: 600; letter-spacing: .08em; margin-bottom: 12px; }
   .svc-foot {
     margin-top: auto; padding-top: 22px;
     display: flex; justify-content: space-between; align-items: center;
@@ -396,13 +404,13 @@
     border: 1px solid var(--ink-3);
     align-self: flex-start;
   }
-  .profile-name { font-size: 22px; letter-spacing: .12em; margin-bottom: 4px; }
+  .profile-name { font-size: 22px; font-weight: 600; letter-spacing: .12em; margin-bottom: 4px; }
   .profile-role { font-family: var(--sans); font-size: 12px; letter-spacing: .2em; color: var(--lamp); margin-bottom: 16px; }
   .sns-row { display: flex; gap: 22px; margin-top: 20px; font-family: var(--sans); font-size: 13px; letter-spacing: .1em; }
   .sns-row a { color: var(--paper-dim); text-decoration: none; border-bottom: 1px solid var(--ink-3); padding-bottom: 2px; transition: color .25s, border-color .25s; }
   .sns-row a:hover { color: var(--paper); border-color: var(--lamp); }
   .story { max-width: 40em; }
-  .story h3 { font-size: 16px; letter-spacing: .12em; margin: 44px 0 14px; }
+  .story h3 { font-size: 16px; font-weight: 600; letter-spacing: .12em; margin: 44px 0 14px; }
   .story h3 .num {
     font-family: var(--sans);
     font-size: 11px; letter-spacing: .3em;
@@ -410,7 +418,7 @@
     margin-right: 12px;
     vertical-align: 2px;
   }
-  .story p { color: var(--paper-dim); font-size: 15px; line-height: 2.15; }
+  .story p { font-family: var(--sans); color: var(--paper-dim); font-size: 14.5px; line-height: 2.15; }
   .story p + p { margin-top: 1.2em; }
   .story .letter { border-left: 2px solid var(--lamp); padding-left: 22px; margin-top: 52px; }
   .story .letter h3 { margin-top: 0; }
@@ -594,8 +602,7 @@
         <p class="type-desc">5つの型がどこから来て、どう付き合えるか。朝、1通ずつ届きます。</p>
         <div class="svc-foot">
           <span class="svc-price">無料</span>
-          <!-- TODO: %%MAIL_LP_URL%% をメール講座登録LPのURLに差し替え -->
-          <a class="btn btn-ghost btn-sm" href="%%MAIL_LP_URL%%">メール講座を受け取る</a>
+          <a class="btn btn-ghost btn-sm" href="https://aotoriaoi.blueloom.jp/p/DaFpYi66okvP" target="_blank" rel="noopener">メール講座を受け取る</a>
         </div>
       </div>
     </div>
@@ -621,6 +628,28 @@
           <a class="btn btn-ghost btn-sm" href="https://x.com/aotoriaoi" target="_blank" rel="noopener">話を聞いてみる</a>
         </div>
         <p class="svc-note">立ち上げ期のモニター募集。条件は、率直な感想をいただくことだけです。お申し込みは X（@aotoriaoi）のDMから。</p>
+      </div>
+    </div>
+
+    <h3 class="svc-group reveal">道具として<span>— 無料アプリ・登録不要</span></h3>
+    <div class="svc-grid">
+      <div class="type-card svc-card reveal">
+        <h4 class="svc-name">呼吸アプリ</h4>
+        <p class="type-desc">生理学的ため息・4-7-8・ボックス呼吸。秒数は画面が数えてくれるので、覚えなくて大丈夫。爆発の瞬間を、しのぐための道具です。</p>
+        <div class="svc-foot">
+          <span class="svc-price">無料</span>
+          <a class="btn btn-ghost btn-sm" href="https://apps.blueloom.jp/breath.html" target="_blank" rel="noopener">呼吸アプリを開く</a>
+        </div>
+        <p class="svc-note">スマホのホーム画面に追加でき、オフラインでも動きます。</p>
+      </div>
+      <div class="type-card svc-card reveal">
+        <h4 class="svc-name">声のジャーナル</h4>
+        <p class="type-desc">音声入力で、その日の気づきを残す。タイピングしなくていい。全部書かなくていい。あとで思い出せる入口を、1つ置くための道具です。</p>
+        <div class="svc-foot">
+          <span class="svc-price">無料</span>
+          <a class="btn btn-ghost btn-sm" href="https://apps.blueloom.jp/journal.html" target="_blank" rel="noopener">声のジャーナルを開く</a>
+        </div>
+        <p class="svc-note">Obsidianをお使いの方向け：Vault名を設定すると、デイリーノートに追記されます。</p>
       </div>
     </div>
 
@@ -746,10 +775,8 @@
   <div class="mail-band-inner">
     <p>診断は、あとでいい。という方へ。<br>4日間、感情の「型」の話を、朝のメールで届けています。無料です。</p>
     <div class="mail-band-btns">
-      <!-- TODO: %%MAIL_LP_URL%% をメール講座登録LPのURLに差し替え -->
-      <a class="btn btn-ghost btn-sm" href="%%MAIL_LP_URL%%">メール講座だけ受け取る</a>
-      <!-- TODO: %%NEWSLETTER_URL%% をメールマガジン登録フォームのURLに差し替え -->
-      <a class="btn btn-ghost btn-sm" href="%%NEWSLETTER_URL%%">メールマガジンに登録する</a>
+      <a class="btn btn-ghost btn-sm" href="https://aotoriaoi.blueloom.jp/p/DaFpYi66okvP" target="_blank" rel="noopener">メール講座だけ受け取る</a>
+      <a class="btn btn-ghost btn-sm" href="https://aotoriaoi.blueloom.jp/p/p5jwKWyPVNEU" target="_blank" rel="noopener">メールマガジンに登録する</a>
     </div>
   </div>
 </aside>
