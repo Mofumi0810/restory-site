@@ -36,6 +36,19 @@ p{color:#b6bcc8;font-size:15px}
 .foot{margin-top:48px;font-size:12px;color:#7f8694}
 .foot a{color:#b6bcc8}
 </style>
+<!-- GA4 — 測定IDが入ったら G-XXXXXXXXXX を実IDに置換するだけで有効化(未設定時は何も送信しない) -->
+<script>
+(function(){
+  var GA_ID='G-XXXXXXXXXX';
+  if(GA_ID.indexOf('XXXX')>-1) return;
+  var s=document.createElement('script'); s.async=true;
+  s.src='https://www.googletagmanager.com/gtag/js?id='+GA_ID;
+  document.head.appendChild(s);
+  window.dataLayer=window.dataLayer||[];
+  function gtag(){dataLayer.push(arguments)}
+  window.gtag=gtag; gtag('js',new Date()); gtag('config',GA_ID);
+})();
+</script>
 </head>
 <body>
 <div class="wrap">

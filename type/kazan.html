@@ -32,6 +32,19 @@ h1 span{font-size:14px;color:#b6bcc8;margin-left:12px;letter-spacing:.2em}
 .btn-g{border:1px solid #1e2839;color:#b6bcc8}
 .note{color:#7f8694;font-size:12px;margin-top:40px}
 .note a{color:#b6bcc8}</style>
+<!-- GA4 — 測定IDが入ったら G-XXXXXXXXXX を実IDに置換するだけで有効化(未設定時は何も送信しない) -->
+<script>
+(function(){
+  var GA_ID='G-XXXXXXXXXX';
+  if(GA_ID.indexOf('XXXX')>-1) return;
+  var s=document.createElement('script'); s.async=true;
+  s.src='https://www.googletagmanager.com/gtag/js?id='+GA_ID;
+  document.head.appendChild(s);
+  window.dataLayer=window.dataLayer||[];
+  function gtag(){dataLayer.push(arguments)}
+  window.gtag=gtag; gtag('js',new Date()); gtag('config',GA_ID);
+})();
+</script>
 </head>
 <body>
 <div class="wrap">
